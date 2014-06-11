@@ -1,0 +1,35 @@
+{
+  "name": "classification-api",
+  "homepage": "http://blackhawkwebcomponents.github.io/classification-api",
+  "description": "",
+  "main": "classification-api.html",
+  "authors": [
+    "Rob Beers"
+  ],
+  "license": "Apache2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "../"
+  ],
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#>=0.3.0 <1.0.0"
+  },
+  "_release": "5d8b1c38f4",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "5d8b1c38f48e9a5c3848e7db310f9747cb971df0"
+  },
+  "_source": "git://github.com/BlackhawkWebComponents/classification-api.git",
+  "_target": "master",
+  "_originalSource": "BlackhawkWebComponents/classification-api"
+}

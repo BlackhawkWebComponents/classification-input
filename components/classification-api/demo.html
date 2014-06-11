@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <title>IC Classification API</title>
+
+    <script src="../platform/platform.js"></script>
+    <link rel="import" href="classification-api.html">
+
+</head>
+<body unresolved>
+
+<ic-classification-api></ic-classification-api>
+
+<h1>Classification API</h1>
+
+<p>
+    JSON MODEL Input
+<pre id="inputModel"></pre>
+</p>
+<p>
+    Output:
+<div id="output"></div>
+</p>
+
+
+<script>
+    var classmodel = {"level":"U","disseminationControls":["FOUO"]};
+
+    var classList = [
+        {"level":"U","disseminationControls":["FOUO"]},
+        {"level":"S","disseminationControls":["NF"]}
+    ];
+    window.addEventListener('polymer-ready', function(e) {
+        var classUtil = document.querySelector('ic-classification-api');
+        var str = classUtil.getClassification(classmodel);
+        document.querySelector('#output').innerHTML = str;
+        document.querySelector("#inputModel").innerHTML = JSON.stringify(classmodel);
+
+        var rollup = classUtil.getRollup(classList);
+        console.log('Rollup val = ' + rollup);
+    });
+</script>
+
+
+</body>
+</html>

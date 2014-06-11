@@ -1,0 +1,1407 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+A non visual api to work with classifications.
+
+##### Example
+
+    <classification-api></classification-api>
+
+@element classification-api
+@blurb A non visual api to work with classifications.
+@status alpha
+@url http://blackhawkwebcomponents.github.io/classification-api
+-->
+<polymer-element name="ic-classification-api">
+
+<template></template>
+
+<script>
+Polymer({
+    ready: function () {
+        this.model = {
+            level: '',
+            ownerProducer: 'USA',
+            disseminationControls: [],
+            releasableTo:[],
+            /* not sure about the required section*/
+            required: {
+                level: true,
+                ownerProducer: true,
+                releasableTo: false
+            }
+        };
+        this.enum = {
+            "levels": [
+                {"value": "U", "description": "UNCLASSIFIED"},
+                {"value": "C", "description": "CONFIDENTIAL"},
+                {"value": "S", "description": "SECRET"},
+                {"value": "TS", "description": "TOP SECRET"}
+            ],
+            "disseminationControls": [
+                {"value": "RS", "description": "RISK SENSITIVE"},
+                {"value": "FOUO", "description": "FOR OFFICIAL USE ONLY"},
+                {"value": "OC", "description": "ORIGINATOR CONTROLLED"},
+                {"value": "IMC", "description": "CONTROLLED IMAGERY"},
+                {"value": "NF", "description": "NOT RELEASABLE TO FOREIGN NATIONALS"},
+                {"value": "PR", "description": "CAUTION-PROPRIETARY INFORMATION INVOLVED"},
+                {"value": "REL", "description": "AUTHORIZED FOR RELEASE TO"},
+                {"value": "RELIDO", "description": "RELEASABLE BY INFORMATION DISCLOSURE OFFICIAL"},
+                {"value": "EYES", "description": "EYES ONLY"},
+                {"value": "DSEN", "description": "DEA SENSITIVE"},
+                {"value": "FISA", "description": "FOREIGN INTELLIGENCE SURVEILLANCE ACT"},
+                {"value": "DISPLAYONLY", "description": "AUTHORIZED FOR DISPLAY BUT NOT RELEASE TO"}
+            ],
+            "triTetraGraphs": [
+                {
+                    "value": "FGI",
+                    "description": " Foreign Government Information"
+                },
+                {
+                    "value": "ABW",
+                    "description": " Aruba"
+                },
+                {
+                    "value": "AFG",
+                    "description": " Islamic Republic of Afghanistan"
+                },
+                {
+                    "value": "AGO",
+                    "description": " the Republic of Angola"
+                },
+                {
+                    "value": "AIA",
+                    "description": " Anguilla"
+                },
+                {
+                    "value": "ALB",
+                    "description": " Republic of Albania"
+                },
+                {
+                    "value": "AND",
+                    "description": " the Principality of Andorra"
+                },
+                {
+                    "value": "ARE",
+                    "description": " United Arab Emirates"
+                },
+                {
+                    "value": "ARG",
+                    "description": " the Argentine Republic"
+                },
+                {
+                    "value": "ARM",
+                    "description": " the Republic of Armenia"
+                },
+                {
+                    "value": "ASM",
+                    "description": " Territory of American Samoa"
+                },
+                {
+                    "value": "ATA",
+                    "description": " Antarctica"
+                },
+                {
+                    "value": "ATF",
+                    "description": " French Southern and Antarctic Lands"
+                },
+                {
+                    "value": "ATG",
+                    "description": " Antigua and Barbuda"
+                },
+                {
+                    "value": "AUS",
+                    "description": " Commonwealth of Australia"
+                },
+                {
+                    "value": "AUT",
+                    "description": " the Republic of Austria"
+                },
+                {
+                    "value": "AX2",
+                    "description": " Guantanamo Bay"
+                },
+                {
+                    "value": "AZE",
+                    "description": " the Republic of Azerbaijan"
+                },
+                {
+                    "value": "BDI",
+                    "description": " the Republic of Burundi"
+                },
+                {
+                    "value": "BEL",
+                    "description": " the Kingdom of Belgium"
+                },
+                {
+                    "value": "BEN",
+                    "description": " the Republic of Benin"
+                },
+                {
+                    "value": "BES",
+                    "description": " Bonaire, Sint Eustatius, and Saba"
+                },
+                {
+                    "value": "BFA",
+                    "description": " Burkina Faso"
+                },
+                {
+                    "value": "BGD",
+                    "description": " People's Republic of Bangladesh"
+                },
+                {
+                    "value": "BGR",
+                    "description": " Republic of Bulgaria"
+                },
+                {
+                    "value": "BHR",
+                    "description": " the Kingdom of Bahrain"
+                },
+                {
+                    "value": "BHS",
+                    "description": " Commonwealth of The Bahamas"
+                },
+                {
+                    "value": "BIH",
+                    "description": " Bosnia and Herzegovina"
+                },
+                {
+                    "value": "BLM",
+                    "description": " Saint Barthelemy"
+                },
+                {
+                    "value": "BLR",
+                    "description": " Republic of Belarus"
+                },
+                {
+                    "value": "BLZ",
+                    "description": " Belize"
+                },
+                {
+                    "value": "BMU",
+                    "description": " Bermuda"
+                },
+                {
+                    "value": "BOL",
+                    "description": " Plurinational State of Bolivia"
+                },
+                {
+                    "value": "BRA",
+                    "description": " Federative Republic of Brazil"
+                },
+                {
+                    "value": "BRB",
+                    "description": " Barbados"
+                },
+                {
+                    "value": "BRN",
+                    "description": " Brunei Darussalam"
+                },
+                {
+                    "value": "BTN",
+                    "description": " the Kingdom of Bhutan"
+                },
+                {
+                    "value": "BVT",
+                    "description": " Bouvet Island"
+                },
+                {
+                    "value": "BWA",
+                    "description": " the Republic of Botswana"
+                },
+                {
+                    "value": "CAF",
+                    "description": " Central African Republic"
+                },
+                {
+                    "value": "CAN",
+                    "description": " Canada"
+                },
+                {
+                    "value": "CCK",
+                    "description": " Territory of Cocos (Keeling) Islands"
+                },
+                {
+                    "value": "CHE",
+                    "description": " the Swiss Confederation"
+                },
+                {
+                    "value": "CHL",
+                    "description": " Republic of Chile"
+                },
+                {
+                    "value": "CHN",
+                    "description": " People's Republic of China"
+                },
+                {
+                    "value": "CIV",
+                    "description": " the Republic of Côte d'Ivoire"
+                },
+                {
+                    "value": "CMR",
+                    "description": " the Republic of Cameroon"
+                },
+                {
+                    "value": "COD",
+                    "description": " Democratic Republic of the Congo"
+                },
+                {
+                    "value": "COG",
+                    "description": " Republic of the Congo"
+                },
+                {
+                    "value": "COK",
+                    "description": " Cook Islands (the)"
+                },
+                {
+                    "value": "COL",
+                    "description": " Republic of Colombia"
+                },
+                {
+                    "value": "COM",
+                    "description": " Union of the Comoros"
+                },
+                {
+                    "value": "CPT",
+                    "description": " Clipperton Island"
+                },
+                {
+                    "value": "CPV",
+                    "description": " Republic of Cape Verde"
+                },
+                {
+                    "value": "CRI",
+                    "description": " Republic of Costa Rica"
+                },
+                {
+                    "value": "CUB",
+                    "description": " Republic of Cuba"
+                },
+                {
+                    "value": "CUW",
+                    "description": " Curaçao"
+                },
+                {
+                    "value": "CXR",
+                    "description": " Territory of Christmas Island"
+                },
+                {
+                    "value": "CYM",
+                    "description": " Cayman Islands (the)"
+                },
+                {
+                    "value": "CYP",
+                    "description": " Republic of Cyprus"
+                },
+                {
+                    "value": "CZE",
+                    "description": " Czech Republic"
+                },
+                {
+                    "value": "DEU",
+                    "description": " the Federal Republic of Germany"
+                },
+                {
+                    "value": "DGA",
+                    "description": " Diego Garcia"
+                },
+                {
+                    "value": "DJI",
+                    "description": " the Republic of Djibouti"
+                },
+                {
+                    "value": "DMA",
+                    "description": " the Commonwealth of Dominica"
+                },
+                {
+                    "value": "DNK",
+                    "description": " the Kingdom of Denmark"
+                },
+                {
+                    "value": "DOM",
+                    "description": " the Dominican Republic"
+                },
+                {
+                    "value": "DZA",
+                    "description": " the People's Democratic Republic of Algeria"
+                },
+                {
+                    "value": "ECU",
+                    "description": " Republic of Ecuador"
+                },
+                {
+                    "value": "EGY",
+                    "description": " the Arab Republic of Egypt"
+                },
+                {
+                    "value": "ERI",
+                    "description": " the State of Eritrea"
+                },
+                {
+                    "value": "ESH",
+                    "description": " Western Sahara"
+                },
+                {
+                    "value": "ESP",
+                    "description": " the Kingdom of Spain"
+                },
+                {
+                    "value": "EST",
+                    "description": " the Republic of Estonia"
+                },
+                {
+                    "value": "ETH",
+                    "description": " the Federal Democratic Republic of Ethiopia"
+                },
+                {
+                    "value": "FIN",
+                    "description": " the Republic of Finland"
+                },
+                {
+                    "value": "FJI",
+                    "description": " the Republic of Fiji"
+                },
+                {
+                    "value": "FLK",
+                    "description": " Falkland Islands (Islas Malvinas)"
+                },
+                {
+                    "value": "FRA",
+                    "description": " French Republic"
+                },
+                {
+                    "value": "FRO",
+                    "description": " Faroe Islands (the)"
+                },
+                {
+                    "value": "FSM",
+                    "description": " Federated States of Micronesia"
+                },
+                {
+                    "value": "GAB",
+                    "description": " the Gabonese Republic"
+                },
+                {
+                    "value": "GBR",
+                    "description": " the United Kingdom of Great Britain and Northern Ireland"
+                },
+                {
+                    "value": "GEO",
+                    "description": " Georgia"
+                },
+                {
+                    "value": "GGY",
+                    "description": " Bailiwick of Guernsey"
+                },
+                {
+                    "value": "GHA",
+                    "description": " the Republic of Ghana"
+                },
+                {
+                    "value": "GIB",
+                    "description": " Gibraltar"
+                },
+                {
+                    "value": "GIN",
+                    "description": " the Republic of Guinea"
+                },
+                {
+                    "value": "GLP",
+                    "description": " Department of Guadeloupe"
+                },
+                {
+                    "value": "GMB",
+                    "description": " Republic of The Gambia"
+                },
+                {
+                    "value": "GNB",
+                    "description": " the Republic of Guinea-Bissau"
+                },
+                {
+                    "value": "GNQ",
+                    "description": " Republic of Equatorial Guinea"
+                },
+                {
+                    "value": "GRC",
+                    "description": " the Hellenic Republic"
+                },
+                {
+                    "value": "GRD",
+                    "description": " Grenada"
+                },
+                {
+                    "value": "GRL",
+                    "description": " Greenland"
+                },
+                {
+                    "value": "GTM",
+                    "description": " the Republic of Guatemala"
+                },
+                {
+                    "value": "GUF",
+                    "description": " Department of Guiana"
+                },
+                {
+                    "value": "GUM",
+                    "description": " Territory of Guam"
+                },
+                {
+                    "value": "GUY",
+                    "description": " Co-operative Republic of Guyana"
+                },
+                {
+                    "value": "HKG",
+                    "description": " Hong Kong Special Administrative Region"
+                },
+                {
+                    "value": "HMD",
+                    "description": " Territory of Heard Island and McDonald Islands"
+                },
+                {
+                    "value": "HND",
+                    "description": " the Republic of Honduras"
+                },
+                {
+                    "value": "HRV",
+                    "description": " the Republic of Croatia"
+                },
+                {
+                    "value": "HTI",
+                    "description": " the Republic of Haiti"
+                },
+                {
+                    "value": "HUN",
+                    "description": " Hungary"
+                },
+                {
+                    "value": "IDN",
+                    "description": " the Republic of Indonesia"
+                },
+                {
+                    "value": "IMN",
+                    "description": " Isle of Man"
+                },
+                {
+                    "value": "IND",
+                    "description": " Republic of India"
+                },
+                {
+                    "value": "IOT",
+                    "description": " British Indian Ocean Territory"
+                },
+                {
+                    "value": "IRL",
+                    "description": " Ireland"
+                },
+                {
+                    "value": "IRN",
+                    "description": " Islamic Republic of Iran"
+                },
+                {
+                    "value": "IRQ",
+                    "description": " the Republic of Iraq"
+                },
+                {
+                    "value": "ISL",
+                    "description": " the Republic of Iceland"
+                },
+                {
+                    "value": "ISR",
+                    "description": " the State of Israel"
+                },
+                {
+                    "value": "ITA",
+                    "description": " Italian Republic"
+                },
+                {
+                    "value": "JAM",
+                    "description": " Jamaica"
+                },
+                {
+                    "value": "JEY",
+                    "description": " Bailiwick of Jersey"
+                },
+                {
+                    "value": "JOR",
+                    "description": " the Hashemite Kingdom of Jordan"
+                },
+                {
+                    "value": "JPN",
+                    "description": " Japan"
+                },
+                {
+                    "value": "KAZ",
+                    "description": " the Republic of Kazakhstan"
+                },
+                {
+                    "value": "KEN",
+                    "description": " the Republic of Kenya"
+                },
+                {
+                    "value": "KGZ",
+                    "description": " the Kyrgyz Republic"
+                },
+                {
+                    "value": "KHM",
+                    "description": " the Kingdom of Cambodia"
+                },
+                {
+                    "value": "KIR",
+                    "description": " Republic of Kiribati"
+                },
+                {
+                    "value": "KNA",
+                    "description": " the Federation of Saint Kitts and Nevis"
+                },
+                {
+                    "value": "KOR",
+                    "description": " Republic of Korea"
+                },
+                {
+                    "value": "KWT",
+                    "description": " the State of Kuwait"
+                },
+                {
+                    "value": "LAO",
+                    "description": " Lao People's Democratic Republic"
+                },
+                {
+                    "value": "LBN",
+                    "description": " the Lebanese Republic"
+                },
+                {
+                    "value": "LBR",
+                    "description": " the Republic of Liberia"
+                },
+                {
+                    "value": "LBY",
+                    "description": " Libya"
+                },
+                {
+                    "value": "LCA",
+                    "description": " Saint Lucia"
+                },
+                {
+                    "value": "LIE",
+                    "description": " the Principality of Liechtenstein"
+                },
+                {
+                    "value": "LKA",
+                    "description": " the Democratic Socialist Republic of Sri Lanka"
+                },
+                {
+                    "value": "LSO",
+                    "description": " the Kingdom of Lesotho"
+                },
+                {
+                    "value": "LTU",
+                    "description": " the Republic of Lithuania"
+                },
+                {
+                    "value": "LUX",
+                    "description": " the Grand Duchy of Luxembourg"
+                },
+                {
+                    "value": "LVA",
+                    "description": " the Republic of Latvia"
+                },
+                {
+                    "value": "MAC",
+                    "description": " Macau Special Administrative Region"
+                },
+                {
+                    "value": "MAF",
+                    "description": " Saint Martin"
+                },
+                {
+                    "value": "MAR",
+                    "description": " the Kingdom of Morocco"
+                },
+                {
+                    "value": "MCO",
+                    "description": " the Principality of Monaco"
+                },
+                {
+                    "value": "MDA",
+                    "description": " Republic of Moldova"
+                },
+                {
+                    "value": "MDG",
+                    "description": " the Republic of Madagascar"
+                },
+                {
+                    "value": "MDV",
+                    "description": " the Republic of Maldives"
+                },
+                {
+                    "value": "MEX",
+                    "description": " the United Mexican States"
+                },
+                {
+                    "value": "MHL",
+                    "description": " Republic of the Marshall Islands"
+                },
+                {
+                    "value": "MKD",
+                    "description": " Republic of Macedonia"
+                },
+                {
+                    "value": "MLI",
+                    "description": " the Republic of Mali"
+                },
+                {
+                    "value": "MLT",
+                    "description": " the Republic of Malta"
+                },
+                {
+                    "value": "MMR",
+                    "description": " Union of Burma"
+                },
+                {
+                    "value": "MNE",
+                    "description": " Montenegro"
+                },
+                {
+                    "value": "MNG",
+                    "description": " Mongolia"
+                },
+                {
+                    "value": "MNP",
+                    "description": "Commonwealth of the Northern Mariana Islands"
+                },
+                {
+                    "value": "MOZ",
+                    "description": "the Republic of Mozambique"
+                },
+                {
+                    "value": "MRT",
+                    "description": "the Islamic Republic of Mauritania"
+                },
+                {
+                    "value": "MSR",
+                    "description": "Montserrat"
+                },
+                {
+                    "value": "MTQ",
+                    "description": "Department of Martinique"
+                },
+                {
+                    "value": "MUS",
+                    "description": "Republic of Mauritius"
+                },
+                {
+                    "value": "MWI",
+                    "description": "the Republic of Malawi"
+                },
+                {
+                    "value": "MYS",
+                    "description": "Malaysia"
+                },
+                {
+                    "value": "MYT",
+                    "description": "Department of Mayotte"
+                },
+                {
+                    "value": "NAM",
+                    "description": "the Republic of Namibia"
+                },
+                {
+                    "value": "NCL",
+                    "description": "New Caledonia"
+                },
+                {
+                    "value": "NER",
+                    "description": "the Republic of the Niger"
+                },
+                {
+                    "value": "NFK",
+                    "description": " Territory of Norfolk Island"
+                },
+                {
+                    "value": "NGA",
+                    "description": " the Federal Republic of Nigeria"
+                },
+                {
+                    "value": "NIC",
+                    "description": " the Republic of Nicaragua"
+                },
+                {
+                    "value": "NIU",
+                    "description": " Niue"
+                },
+                {
+                    "value": "NLD",
+                    "description": " Kingdom of the Netherlands"
+                },
+                {
+                    "value": "NOR",
+                    "description": " Kingdom of Norway"
+                },
+                {
+                    "value": "NPL",
+                    "description": " the Federal Democratic Republic of Nepal"
+                },
+                {
+                    "value": "NRU",
+                    "description": " the Republic of Nauru"
+                },
+                {
+                    "value": "NZL",
+                    "description": " New Zealand"
+                },
+                {
+                    "value": "OMN",
+                    "description": " Sultanate of Oman"
+                },
+                {
+                    "value": "PAK",
+                    "description": " the Islamic Republic of Pakistan"
+                },
+                {
+                    "value": "PAN",
+                    "description": " the Republic of Panama"
+                },
+                {
+                    "value": "PCN",
+                    "description": " Pitcairn, Henderson, Ducie, and Oeno Islands"
+                },
+                {
+                    "value": "PER",
+                    "description": " the Republic of Peru"
+                },
+                {
+                    "value": "PHL",
+                    "description": " Republic of the Philippines"
+                },
+                {
+                    "value": "PLW",
+                    "description": " the Republic of Palau"
+                },
+                {
+                    "value": "PNG",
+                    "description": " Independent State of Papua New Guinea"
+                },
+                {
+                    "value": "POL",
+                    "description": " the Republic of Poland"
+                },
+                {
+                    "value": "PRI",
+                    "description": " Commonwealth of Puerto Rico"
+                },
+                {
+                    "value": "PRK",
+                    "description": " Democratic People's Republic of Korea"
+                },
+                {
+                    "value": "PRT",
+                    "description": " the Portuguese Republic"
+                },
+                {
+                    "value": "PRY",
+                    "description": " the Republic of Paraguay"
+                },
+                {
+                    "value": "PSE",
+                    "description": " Palestinian Territory"
+                },
+                {
+                    "value": "PYF",
+                    "description": " French Polynesia"
+                },
+                {
+                    "value": "QAT",
+                    "description": " the State of Qatar"
+                },
+                {
+                    "value": "REU",
+                    "description": " Department of Reunion"
+                },
+                {
+                    "value": "ROU",
+                    "description": " Romania"
+                },
+                {
+                    "value": "RUS",
+                    "description": " Russian Federation"
+                },
+                {
+                    "value": "RWA",
+                    "description": " the Republic of Rwanda"
+                },
+                {
+                    "value": "SAU",
+                    "description": " Kingdom of Saudi Arabia"
+                },
+                {
+                    "value": "SDN",
+                    "description": " the Republic of the Sudan"
+                },
+                {
+                    "value": "SEN",
+                    "description": " the Republic of Senegal"
+                },
+                {
+                    "value": "SGP",
+                    "description": " the Republic of Singapore"
+                },
+                {
+                    "value": "SGS",
+                    "description": " South Georgia and the South Sandwich Islands"
+                },
+                {
+                    "value": "SHN",
+                    "description": " Saint Helena, Ascension, and Tristan da Cunha"
+                },
+                {
+                    "value": "SLB",
+                    "description": " Solomon Islands (the)"
+                },
+                {
+                    "value": "SLE",
+                    "description": " the Republic of Sierra Leone"
+                },
+                {
+                    "value": "SLV",
+                    "description": " the Republic of El Salvador"
+                },
+                {
+                    "value": "SMR",
+                    "description": " the Republic of San Marino"
+                },
+                {
+                    "value": "SOM",
+                    "description": " Somalia"
+                },
+                {
+                    "value": "SPM",
+                    "description": " Territorial Collectivity of Saint Pierre and Miquelon"
+                },
+                {
+                    "value": "SRB",
+                    "description": " Republic of Serbia"
+                },
+                {
+                    "value": "SSD",
+                    "description": " the Republic of South Sudan"
+                },
+                {
+                    "value": "STP",
+                    "description": " the Democratic Republic of Sao Tome and Principe"
+                },
+                {
+                    "value": "SUR",
+                    "description": " the Republic of Suriname"
+                },
+                {
+                    "value": "SVK",
+                    "description": " the Slovak Republic"
+                },
+                {
+                    "value": "SVN",
+                    "description": " the Republic of Slovenia"
+                },
+                {
+                    "value": "SWE",
+                    "description": " the Kingdom of Sweden"
+                },
+                {
+                    "value": "SWZ",
+                    "description": " the Kingdom of Swaziland"
+                },
+                {
+                    "value": "SXM",
+                    "description": " Sint Maarten"
+                },
+                {
+                    "value": "SYC",
+                    "description": " Republic of Seychelles"
+                },
+                {
+                    "value": "SYR",
+                    "description": " Syrian Arab Republic"
+                },
+                {
+                    "value": "TCA",
+                    "description": " Turks and Caicos Islands (the)"
+                },
+                {
+                    "value": "TCD",
+                    "description": " the Republic of Chad"
+                },
+                {
+                    "value": "TGO",
+                    "description": " the Togolese Republic"
+                },
+                {
+                    "value": "THA",
+                    "description": " the Kingdom of Thailand"
+                },
+                {
+                    "value": "TJK",
+                    "description": " the Republic of Tajikistan"
+                },
+                {
+                    "value": "TKL",
+                    "description": " Tokelau"
+                },
+                {
+                    "value": "TKM",
+                    "description": " Turkmenistan"
+                },
+                {
+                    "value": "TLS",
+                    "description": " the Democratic Republic of Timor-Leste"
+                },
+                {
+                    "value": "TON",
+                    "description": " the Kingdom of Tonga"
+                },
+                {
+                    "value": "TTO",
+                    "description": " the Republic of Trinidad and Tobago"
+                },
+                {
+                    "value": "TUN",
+                    "description": " Tunisian Republic"
+                },
+                {
+                    "value": "TUR",
+                    "description": " the Republic of Turkey"
+                },
+                {
+                    "value": "TUV",
+                    "description": " Tuvalu"
+                },
+                {
+                    "value": "TWN",
+                    "description": " Taiwan"
+                },
+                {
+                    "value": "TZA",
+                    "description": " United Republic of Tanzania"
+                },
+                {
+                    "value": "UGA",
+                    "description": " the Republic of Uganda"
+                },
+                {
+                    "value": "UKR",
+                    "description": " Ukraine"
+                },
+                {
+                    "value": "URY",
+                    "description": " Oriental Republic of Uruguay"
+                },
+                {
+                    "value": "USA",
+                    "description": " United States of America"
+                },
+                {
+                    "value": "UZB",
+                    "description": "the Republic of Uzbekistan"
+                },
+                {
+                    "value": "VAT",
+                    "description": "State of the Vatican City"
+                },
+                {
+                    "value": "VCT",
+                    "description": "Saint Vincent and the Grenadines"
+                },
+                {
+                    "value": "VEN",
+                    "description": " Bolivarian Republic of Venezuela"
+                },
+                {
+                    "value": "VGB",
+                    "description": " Virgin Islands, British"
+                },
+                {
+                    "value": "VIR",
+                    "description": " United States Virgin Islands"
+                },
+                {
+                    "value": "VNM",
+                    "description": " Socialist Republic of Vietnam"
+                },
+                {
+                    "value": "VUT",
+                    "description": " Republic of Vanuatu"
+                },
+                {
+                    "value": "WLF",
+                    "description": " Wallis and Futuna"
+                },
+                {
+                    "value": "WSM",
+                    "description": " the Independent State of Samoa"
+                },
+                {
+                    "value": "XAC",
+                    "description": " Territory of Ashmore and Cartier Islands"
+                },
+                {
+                    "value": "XAZ",
+                    "description": " Entity 1"
+                },
+                {
+                    "value": "XBI",
+                    "description": " Bassas da India"
+                },
+                {
+                    "value": "XBK",
+                    "description": " Baker Island"
+                },
+                {
+                    "value": "XCR",
+                    "description": " Entity 2"
+                },
+                {
+                    "value": "XCS",
+                    "description": " Coral Sea Islands Territory"
+                },
+                {
+                    "value": "XCY",
+                    "description": " Entity 3"
+                },
+                {
+                    "value": "XEU",
+                    "description": " Europa Island"
+                },
+                {
+                    "value": "XGL",
+                    "description": " Glorioso Islands"
+                },
+                {
+                    "value": "XGZ",
+                    "description": " Gaza Strip"
+                },
+                {
+                    "value": "XHO",
+                    "description": " Howland Island"
+                },
+                {
+                    "value": "XJA",
+                    "description": " Johnston Atoll"
+                },
+                {
+                    "value": "XJM",
+                    "description": " Jan Mayen"
+                },
+                {
+                    "value": "XJN",
+                    "description": " Juan de Nova Island"
+                },
+                {
+                    "value": "XJV",
+                    "description": " Jarvis Island"
+                },
+                {
+                    "value": "XKM",
+                    "description": " Entity 4"
+                },
+                {
+                    "value": "XKN",
+                    "description": " Entity 5"
+                },
+                {
+                    "value": "XKR",
+                    "description": " Kingman Reef"
+                },
+                {
+                    "value": "XKS",
+                    "description": " Republic of Kosovo"
+                },
+                {
+                    "value": "XMW",
+                    "description": " Midway Islands"
+                },
+                {
+                    "value": "XNV",
+                    "description": " Navassa Island"
+                },
+                {
+                    "value": "XPL",
+                    "description": " Palmyra Atoll"
+                },
+                {
+                    "value": "XPR",
+                    "description": " Paracel Islands"
+                },
+                {
+                    "value": "XQP",
+                    "description": " Etorofu, Habomai, Kunashiri, and Shikotan Islands "
+                },
+                {
+                    "value": "XQZ",
+                    "description": " Akrotiri"
+                },
+                {
+                    "value": "XSP",
+                    "description": " Spratly Islands"
+                },
+                {
+                    "value": "XSV",
+                    "description": " Svalbard"
+                },
+                {
+                    "value": "XTR",
+                    "description": " Tromelin Island"
+                },
+                {
+                    "value": "XWB",
+                    "description": " West Bank"
+                },
+                {
+                    "value": "XWK",
+                    "description": " Wake Island"
+                },
+                {
+                    "value": "XXD",
+                    "description": " Dhekelia"
+                },
+                {
+                    "value": "XXX",
+                    "description": " No Man's Land"
+                },
+                {
+                    "value": "YEM",
+                    "description": " Republic of Yemen"
+                },
+                {
+                    "value": "ZAF",
+                    "description": " Republic of South Africa"
+                },
+                {
+                    "value": "ZMB",
+                    "description": " the Republic of Zambia"
+                },
+                {
+                    "value": "ZWE",
+                    "description": " the Republic of Zimbabwe"
+                },
+                {
+                    "value": "ACGU",
+                    "description": " FOUR EYES"
+                },
+                {
+                    "value": "APFS",
+                    "description": " Suppressed"
+                },
+                {
+                    "value": "BWCS",
+                    "description": " Biological Weapons Convention States"
+                },
+                {
+                    "value": "CFCK",
+                    "description": " ROK/US Combined Forces Command, Korea"
+                },
+                {
+                    "value": "CMFC",
+                    "description": " Combined Maritime Forces Central"
+                },
+                {
+                    "value": "CMFP",
+                    "description": " Cooperative Maritime Forces Pacific"
+                },
+                {
+                    "value": "CPMT",
+                    "description": " Civilian Protection Monitoring Team for Sudan"
+                },
+                {
+                    "value": "CTOC",
+                    "description": " Countering Transnational Organized Crime"
+                },
+                {
+                    "value": "CWCS",
+                    "description": "Chemical Weapons Convention States"
+                },
+                {
+                    "value": "EFOR",
+                    "description": "European Union Stabilization Forces in Bosnia"
+                },
+                {
+                    "value": "EUDA",
+                    "description": "European Union DARFUR"
+                },
+                {
+                    "value": "FVEY",
+                    "description": "FIVE EYES"
+                },
+                {
+                    "value": "GCTF",
+                    "description": "Global Counter-Terrorism Forces"
+                },
+                {
+                    "value": "GMIF",
+                    "description": "Global Maritime Interception Forces"
+                },
+                {
+                    "value": "ISAF",
+                    "description": "International Security Assistance Force for Afghanistan"
+                },
+                {
+                    "value": "KFOR",
+                    "description": "Stabilization Forces in Kosovo"
+                },
+                {
+                    "value": "MIFH",
+                    "description": "Multinational Interim Force Haiti"
+                },
+                {
+                    "value": "MLEC",
+                    "description": "Multi-Lateral Enduring Contingency"
+                },
+                {
+                    "value": "NACT",
+                    "description": "North African Counter-Terrorism Forces"
+                },
+                {
+                    "value": "NATO",
+                    "description": "North Atlantic Treaty Organization"
+                },
+                {
+                    "value": "OSTY",
+                    "description": "Open Skies Treaty"
+                },
+                {
+                    "value": "SPAA",
+                    "description": "Suppressed"
+                },
+                {
+                    "value": "TEYE",
+                    "description": "THREE EYES"
+                },
+                {
+                    "value": "UNCK",
+                    "description": "United Nations Command, Korea"
+                }
+            ]
+        }
+    },
+    /**
+     * Returns the Classification String.
+     * @method getClassification
+     */
+    getClassification: function(model) {
+        var str = '';
+
+        switch(model.level) {
+            case 'U':
+                str += 'UNCLASSIFIED';
+                break;
+            case 'C':
+                str += 'CONFIDENTIAL';
+                break;
+            case 'S':
+                str += 'SECRET';
+                break;
+            case 'TS':
+                str += 'TOP SECRET';
+                break;
+            default:
+        }
+
+        var dc =  model.disseminationControls.join(',');
+        if (dc.length > 0)
+            str += '//' + dc;
+
+        return str;
+    },
+    /**
+     * Returns the Rollup Classification given an array of classifications.
+     * @method getRollup
+     */
+    getRollup: function(arr) {
+        //just find highest class and return it as string for now
+        var u = false, c = false, s = false, ts = false;
+        for(var i = 0; i < arr.length; ++i) {
+            if (arr[i].level =='U') u = true;
+            if (arr[i].level =='C') c = true;
+            if (arr[i].level =='S') s = true;
+            if (arr[i].level =='TS') ts = true;
+        }
+        if (ts) return 'TS';
+        if (s) return 'S';
+        if (c) return 'C';
+        return 'U';
+    },
+    dissemByLevel: function(level) {
+        //TODO: we need to document here each rule we are adhering to in the schematron, below is an example
+        /**
+         * RULE:disseminationControls/ISM_ID_00030.sch - FOUO
+         * RULE:disseminationControls/ISM_ID_00164.sch - RS
+         * RULE:disseminationControls/ISM_ID_00028.sch - OC,EYES
+         * RULE:disseminationControls/ISM_ID_00107.sch - IMC
+         * RULE:generalConstraints/ISM_ID_00119.sch - NF,DISPLAYONLY,REL,RELIDO
+         **/
+        switch(level) {
+
+            case 'U':
+                return this.filterListByVals(
+                        this.enum.disseminationControls, ['FOUO','PR','DSEN','FISA']);
+            case 'C':
+                return this.filterListByVals(
+                        this.enum.disseminationControls, ['OC','EYES','NF','REL',
+                            'RELIDO','DISPLAYONLY','PR','DSEN','FISA']);
+            case 'S':
+                return this.filterListByVals(
+                        this.enum.disseminationControls, ['RS','OC','EYES','IMC',
+                            'NF','REL','RELIDO','DISPLAYONLY','PR','DSEN','FISA']);
+            case 'TS':
+                return this.filterListByVals(
+                        this.enum.disseminationControls, ['RS','OC','EYES','IMC',
+                            'NF','REL','RELIDO','DISPLAYONLY','PR','DSEN','FISA']);
+            default:
+                return [];
+        }
+    },
+    updateRequired: function(model) {
+        // check releasable to
+        console.log('in update Required, checking REL');
+        if (this.valExistsInList('REL', model.disseminationControls)) {
+            console.log('it is in list, setting required.releasableTo to true');
+            model.required.releasableTo = true;
+        } else {
+            console.log('it is NOT in list, setting required.releasableTo to false');
+            model.required.releasableTo = false;
+        }
+
+
+    },
+    /**
+     * Helper function that filters down an array based on array of values,
+     * let's us not worry about the description aspect of the object.
+     * We can pass [{"value":"FOUO","description":For Official..."},
+     *   {"value":"NF","description":..."},{"value":"REL","description":..."}] as the arr
+     * and then ["NF","REL"] as the valArr and we will get the following returned
+     * [{"value":"NF","description":..."},{"value":"REL","description":..."}]
+     * @param arr
+     * @param valArr
+     * @returns {Array}
+     */
+    filterListByVals: function(arr, valArr) {
+        var filteredArr = [];
+        for (var i = 0; i < arr.length; ++i) {
+            for (var j = 0; j < valArr.length; ++j) {
+                if (arr[i].value == valArr[j]) {
+                    filteredArr.push(arr[i]);
+                }
+            }
+        }
+        return filteredArr;
+    },
+    valExistsInList: function(val, arr) {
+        var exists = false;
+        for (var i = 0; i < arr.length; ++i) {
+            if (arr[i] == val) {
+                exists = true;
+            }
+        }
+        return exists;
+    }
+});
+</script>
+
+</polymer-element>

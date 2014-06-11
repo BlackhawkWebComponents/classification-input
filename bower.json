@@ -1,0 +1,7 @@
+{
+  "name": "classification-input#gh-pages",
+  "private": true,
+  "dependencies": {
+    "classification-input": "blackhawkwebcomponents/classification-input#master"
+  }
+}

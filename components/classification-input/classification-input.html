@@ -1,0 +1,144 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-selector/core-selector.html">
+<link rel="import" href="../core-pages/core-pages.html">
+<link rel="import" href="../core-field/core-field.html">
+<link rel="import" href="../core-icon/core-icon.html">
+<link rel="import" href="../core-icon-button/core-icon-button.html">
+<link rel="import" href="../core-collapse/core-collapse.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-menu/core-menu.html">
+<link rel="import" href="../core-item/core-item.html">
+<link rel="import" href="../core-layout/core-layout.html">
+
+<link rel="import" href="../classification-api/classification-api.html">
+
+<!--
+Classification Input for the IC Community following standards
+http://www.dni.gov/index.php/about/organization/chief-information-officer/information-security-marking-metadata
+
+##### Example
+
+    <classification-input></classification-input>
+
+@element classification-input
+@blurb Classification Input for the IC Community.
+@status alpha
+@url http://blackhawkwebcomponents.github.io/classification-inut
+-->
+<polymer-element name="classification-input" attributes="state">
+
+    <template>
+        <link href="classification-input.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="../polymer-flex-layout/polymer-flex-layout.css">
+        <ic-classification-api id="api"></ic-classification-api>
+
+        <core-field class="inputField">
+            <core-icon icon="search"></core-icon>
+            <input id="input" placeholder="{{classification}}" value="{{query}}" flex on-change="{{search}}">
+            <core-icon-button on-click="{{toggleEdit}}" icon="add"></core-icon-button>
+        </core-field>
+
+        <core-collapse id="collapse1" > <!-- only opened for debugging -->
+            <core-layout core-flex vertical>
+                <div id="tabs_container">
+                    <core-selector id="tabs" valueattr="label" selected="{{model.level}}">
+                        <span id="unclass" label="U">UNCLASSIFIED</span>
+                        <span id="confidential" label="C">CONFIDENTIAL</span>
+                        <span id="secret" label="S">SECRET</span>
+                        <span id="topsecret" label="TS">TOP SECRET</span>
+                    </core-selector>
+                </div>
+                <template if="{{model.level}}">
+                    <core-layout core-flex>
+                        <core-menu selected="{{classOptionSelected}}" class="dark">
+                            <core-item icon="settings" label="Controls"></core-item>
+                            <core-item icon="account-box" label="Owner"></core-item>
+                        </core-menu>
+                        <div id="class_option_body" core-flex>
+                            <core-pages valueattr="label" selected="{{classOptionSelected}}">
+                                <div label="Controls">
+                                    <core-selector valueattr="label"
+                                                   multi
+                                                   selected="{{model.disseminationControls}}">
+                                        <template repeat="{{dissemList}}">
+                                            <span class="dissemItem" label="{{value}}">{{value}}</span>
+                                        </template>
+                                    </core-selector>
+                                </div>
+                                <div label="Owner">
+                                    <select value="{{model.ownerProducer}}">
+                                        <option template repeat="{{enum.triTetraGraphs}}">{{value}}</option>
+                                    </select>
+                                </div>
+                            </core-pages>
+                        </div>
+                    </core-layout>
+                </template>
+            </core-layout>
+        </core-collapse>
+    </template>
+
+    <script>
+        Polymer({
+            classOptionSelected: 'Controls',
+            editing:false,
+            /**
+             * Current Value of the classification in json format.
+             * @attribute state
+             * @type json
+             */
+            state:'',
+            classification:'',
+            ready: function () {
+                console.log('in ready');
+                this.model = this.$.api.model;
+                this.enum = this.$.api.enum;
+                this.dissemList = [];
+                this.currentDisseminationControl = '';
+                this.state = '';
+            },
+
+            observe: {
+                'model.level': 'levelUpdated',
+                'model.disseminationControls': 'updatestate'
+            },
+
+            levelUpdated: function() {
+                this.model.disseminationControls = []; // TODO: memory leak?
+                this.dissemList = this.$.api.dissemByLevel(this.model.level);
+                this.classOptionSelected = 'Controls';
+                this.updatestate();
+
+            },
+            updatestate: function () {
+                // update all required states
+                this.$.api.updateRequired(this.model);
+                console.log('required after updateRequired call: ' + this.model.required.releasableTo);
+                this.state = JSON.stringify(this.model);
+                this.classification = this.$.api.getClassification(this.model);
+                //this._updateText();
+            },
+            dissemList: function() {
+                return this.enum.dissem;
+            },
+            //TODO: Move this to class banner template
+            _updateText: function () {
+                this.state = this.model.level + "//" +
+                        this.model.disseminationControls.join(',');
+
+            },
+            toggleEdit: function() {
+                console.log('in toggleEdit');
+                this.$.collapse1.toggle();
+                this.editing = !this.editing;
+            },
+            // filter to display json
+            json: function(value) {
+                return JSON.stringify(value, null, 2);
+            }
+
+        });
+
+    </script>
+
+</polymer-element>
