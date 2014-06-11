@@ -32,6 +32,7 @@
         "core-icons": "Polymer/core-icons#>=0.3.0 <1.0.0",
         "core-menu": "Polymer/core-menu#>=0.3.0 <1.0.0",
         "core-item": "Polymer/core-item#>=0.3.0 <1.0.0",
-        "core-layout": "Polymer/core-layout#>=0.3.0 <1.0.0"
+        "core-layout": "Polymer/core-layout#>=0.3.0 <1.0.0",
+        "polymer-flex-layout": "PolymerLabs/polymer-flex-layout#>=0.3.0 <1.0.0"
     }
 }
